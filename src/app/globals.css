@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f4f2ee;
+  --card: #ffffff;
+  --ink: #0d0d0d;
+  --ink-2: #3a3a3a;
+  --mute: #77756f;
+  --faint: #a9a6a0;
+  --line: rgba(13, 13, 13, 0.1);
+  --soft: #e9e6e0;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(18px, 4vw, 64px);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    scroll-behavior: auto; /* smooth scroll handled by Lenis */
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  a, button {
+    outline: none;
+    transition: color 0.25s var(--ease), background-color 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Section layout */
+  .section-container {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+
+  .section-padding {
+    padding-top: clamp(96px, 14vh, 160px);
+    padding-bottom: clamp(96px, 14vh, 160px);
+  }
+
+  /* Section heading system */
+  .section-tag {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-heading {
+    font-family: var(--font-inter), sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--ink);
+    margin-bottom: clamp(2rem, 5vh, 4rem);
+  }
+
+  .heading-italic {
+    font-family: var(--font-instrument), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--mute);
+  }
+
+  /* Card system */
+  .paper-card {
+    background-color: var(--card);
+    border-radius: 26px;
+    box-shadow: inset 0 0 0 1px var(--line), 0 4px 24px -6px rgba(13, 13, 13, 0.04);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+
+  .paper-card:hover {
+    box-shadow: inset 0 0 0 1px rgba(13, 13, 13, 0.15), 0 18px 48px -12px rgba(13, 13, 13, 0.09);
+  }
+
+  /* Pill Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 1.75rem;
+    border-radius: 9999px;
+    background-color: var(--ink);
+    color: var(--paper);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(13, 13, 13, 0.12);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--ink-2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 13, 13, 0.18);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 1.75rem;
+    border-radius: 9999px;
+    background-color: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--ink);
+    background-color: rgba(13, 13, 13, 0.03);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll Reveal System */
+  .rv {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    transition-delay: calc(var(--i, 0) * 0.08s);
+    will-change: opacity, transform;
+  }
+
+  .rv.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rv-mask {
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .rv-mask > * {
+    transform: translateY(105%);
+    transition: transform 0.85s var(--ease);
+    transition-delay: calc(var(--i, 0) * 0.1s);
+  }
+
+  .rv-mask.is-in > * {
+    transform: translateY(0%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .rv {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .rv-mask > * {
+    transform: none !important;
+  }
+}
